@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <pthread.h>
+
+int counter = 0;              // Shared variable
+pthread_mutex_t lock;         // Mutex lock
+
+void* increment(void* arg) {
+    for (int i = 0; i < 5; i++) {
+        pthread_mutex_lock(&lock);      // Lock the critical section
+
+        int temp = counter;
+        temp++;
+        printf("Thread %ld incremented counter to %d\n", (long)arg, temp);
+        counter = temp;
+
+        pthread_mutex_unlock(&lock);    // Unlock the critical section
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t t1, t2;
+
+    pthread_mutex_init(&lock, NULL);    // Initialize mutex
+
+    pthread_create(&t1, NULL, increment, (void*)1);
+    pthread_create(&t2, NULL, increment, (void*)2);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    printf("\nFinal Counter Value: %d\n", counter);
+
+    pthread_mutex_destroy(&lock);       // Destroy mutex
+    return 0;
+}
+
+Output:
+Thread 1 incremented counter to 1
+Thread 1 incremented counter to 2
+Thread 1 incremented counter to 3
+Thread 1 incremented counter to 4
+Thread 1 incremented counter to 5
+Thread 2 incremented counter to 6
+Thread 2 incremented counter to 7
+Thread 2 incremented counter to 8
+Thread 2 incremented counter to 9
+Thread 2 incremented counter to 10
+
+Final Counter Value: 10

@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char dname[20], fname[20][20];
+    int n = 0, choice;
+
+    printf("Enter directory name: ");
+    scanf("%s", dname);
+
+    while (1) {
+        printf("\n--- Single Level Directory ---\n");
+        printf("1. Create File\n2. Delete File\n3. Search File\n4. Display Files\n5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 1) {
+            printf("Enter file name to create: ");
+            scanf("%s", fname[n]);
+            n++;
+            printf("File created successfully.\n");
+        }
+
+        else if (choice == 2) {
+            char f[20];
+            int found = 0;
+            printf("Enter file name to delete: ");
+            scanf("%s", f);
+
+            for (int i = 0; i < n; i++) {
+                if (strcmp(f, fname[i]) == 0) {
+                    found = 1;
+                    strcpy(fname[i], fname[n - 1]);
+                    n--;
+                    printf("File deleted.\n");
+                    break;
+                }
+            }
+            if (!found) printf("File not found.\n");
+        }
+
+        else if (choice == 3) {
+            char f[20];
+            int found = 0;
+            printf("Enter file name to search: ");
+            scanf("%s", f);
+
+            for (int i = 0; i < n; i++) {
+                if (strcmp(f, fname[i]) == 0) {
+                    found = 1;
+                    printf("File found in directory.\n");
+                    break;
+                }
+            }
+            if (!found) printf("File not found.\n");
+        }
+
+        else if (choice == 4) {
+            printf("\nDirectory: %s\n", dname);
+            printf("Files:\n");
+            for (int i = 0; i < n; i++)
+                printf("%s\n", fname[i]);
+        }
+
+        else if (choice == 5) {
+            break;
+        }
+
+        else {
+            printf("Invalid choice.\n");
+        }
+    }
+
+    return 0;
+}
+
+output:
+Enter directory name: MyDir
+
+--- Single Level Directory ---
+1. Create File
+2. Delete File
+3. Search File
+4. Display Files
+5. Exit
+Enter your choice: 1
+Enter file name to create: 1
+File created successfully.
+
+--- Single Level Directory ---
+1. Create File
+2. Delete File
+3. Search File
+4. Display Files
+5. Exit

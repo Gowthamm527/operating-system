@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <unistd.h>
+
+#define N 5   // Number of philosophers
+
+sem_t chopstick[N];
+
+void* philosopher(void* num) {
+    int id = *(int*)num;   // Correct way to read thread argument
+
+    printf("Philosopher %d is thinking...\n", id);
+    sleep(1);
+
+    // Pick up chopsticks
+    sem_wait(&chopstick[id]);            // left
+    sem_wait(&chopstick[(id + 1) % N]);  // right
+
+    printf("Philosopher %d is eating...\n", id);
+    sleep(2);
+
+    // Put down chopsticks
+    sem_post(&chopstick[id]);
+    sem_post(&chopstick[(id + 1) % N]);
+
+    printf("Philosopher %d has finished eating.\n", id);
+    return NULL;
+}
+
+int main() {
+    pthread_t tid[N];
+    int ids[N];
+
+    // Initialize semaphores
+    for (int i = 0; i < N; i++)
+        sem_init(&chopstick[i], 0, 1);
+
+    // Create philosopher threads
+    for (int i = 0; i < N; i++) {
+        ids[i] = i;
+        pthread_create(&tid[i], NULL, philosopher, &ids[i]);
+    }
+
+    // Wait for all philosophers
+    for (int i = 0; i < N; i++)
+        pthread_join(tid[i], NULL);
+
+    return 0;
+}
+
+
+Output:
+Philosopher 0 is thinking...
+Philosopher 4 is thinking...
+Philosopher 2 is thinking...
+Philosopher 3 is thinking...
+Philosopher 1 is thinking...
+Philosopher 0 is eating...
+Philosopher 2 is eating...
+Philosopher 0 has finished eating.
+Philosopher 4 is eating...
+Philosopher 2 has finished eating.
+Philosopher 1 is eating...
+Philosopher 4 has finished eating.
+Philosopher 1 has finished eating.
+Philosopher 3 is eating...
+Philosopher 3 has finished eating.
+
+
+=== Code Execution Successful ===

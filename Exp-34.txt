@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string.h>
+struct Record {
+    int id;
+    char data[50];
+};
+int main() {
+    struct Record file[50];
+    int n, i, searchId;
+    printf("Enter number of records: ");
+    scanf("%d", &n);
+    for (i = 0; i < n; i++) {
+        printf("\nEnter Record %d ID: ", i + 1);
+        scanf("%d", &file[i].id);
+        printf("Enter Record %d Data: ", i + 1);
+        scanf("%s", file[i].data);
+    }
+    printf("\nEnter Record ID to access: ");
+    scanf("%d", &searchId);
+    printf("\nAccessing records sequentially...\n");
+    for (i = 0; i < n; i++) {
+        printf("Reading Record %d: ID=%d, Data=%s\n", i + 1, file[i].id, file[i].data);
+        if (file[i].id == searchId) {
+            printf("\nRecord Found! Access Successful.\n");
+            return 0;
+        }
+    }
+    printf("\nRecord NOT found in file.\n");
+    return 0;
+}
+
+Output:
+Enter number of records: 4
+
+Enter Record 1 ID: 101
+Enter Record 1 Data: Alice
+
+Enter Record 2 ID: 102
+Enter Record 2 Data: Bob
+
+Enter Record 3 ID: 103
+Enter Record 3 Data: Ram
+
+Enter Record 4 ID: 104
+Enter Record 4 Data: Jack
+
+Enter Record ID to access: 104
+
+Accessing records sequentially...
+Reading Record 1: ID=101, Data=Alice
+Reading Record 2: ID=102, Data=Bob
+Reading Record 3: ID=103, Data=Ram
+Reading Record 4: ID=104, Data=Jack
+
+Record Found! Access Successful.
+
+
+=== Code Execution Successful ===

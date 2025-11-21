@@ -1,0 +1,95 @@
+#include <stdio.h>
+int findOptimal(int pages[], int frames[], int n, int index, int f) {
+    int farthest = -1, pos = -1;
+    for (int i = 0; i < f; i++) {
+        int j;
+        for (j = index; j < n; j++) {
+            if (frames[i] == pages[j]) {
+                if (j > farthest) {
+                    farthest = j;
+                    pos = i;
+                }
+                break;
+            }
+        }
+        if (j == n) 
+            return i;
+    }
+    return (pos == -1) ? 0 : pos;
+}
+int main() {
+    int pages[30], frames[10];
+    int n, f, faults = 0, i, j;
+    printf("Enter number of pages: ");
+    scanf("%d", &n);
+    printf("Enter page reference string: ");
+    for (i = 0; i < n; i++)
+        scanf("%d", &pages[i]);
+    printf("Enter number of frames: ");
+    scanf("%d", &f);
+    for (i = 0; i < f; i++)
+        frames[i] = -1;
+    printf("\nOptimal Page Replacement\n");
+    printf("Page\tFrames\n");
+    for (i = 0; i < n; i++) {
+        int hit = 0;
+        for (j = 0; j < f; j++) {
+            if (frames[j] == pages[i]) {
+                hit = 1;
+                break;
+            }
+        }
+        if (!hit) {
+            int empty = -1;
+            for (j = 0; j < f; j++) {
+                if (frames[j] == -1) {
+                    empty = j;
+                    break;
+                }
+            }
+            if (empty != -1) {
+                frames[empty] = pages[i];
+                faults++;
+            } else {
+                int pos = findOptimal(pages, frames, n, i + 1, f);
+                frames[pos] = pages[i];
+                faults++;
+            }
+        }
+        printf("%d\t", pages[i]);
+        for (j = 0; j < f; j++) {
+            if (frames[j] == -1)
+                printf("- ");
+            else
+                printf("%d ", frames[j]);
+        }
+        printf("\n");
+    }
+    printf("\nTotal Page Faults = %d\n", faults);
+    return 0;
+}
+
+Output:
+Enter number of pages: 12
+Enter page reference string: 1 2 3 4 1 2 5 1 2 3 4 5
+Enter number of frames: 3
+
+Optimal Page Replacement
+Page	Frames
+1	1 - - 
+2	1 2 - 
+3	1 2 3 
+4	1 2 4 
+1	1 2 4 
+2	1 2 4 
+5	1 2 5 
+1	1 2 5 
+2	1 2 5 
+3	3 2 5 
+4	4 2 5 
+5	4 2 5 
+
+Total Page Faults = 7
+
+
+=== Code Execution Successful ===

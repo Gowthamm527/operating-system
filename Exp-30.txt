@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <pthread.h>
+void* threadFunc(void* arg) {
+    printf("Thread is running...\n");
+    return NULL;
+}
+int main() {
+    pthread_t tid;
+    pthread_create(&tid, NULL, threadFunc, NULL);
+    pthread_join(tid, NULL);
+    printf("Main thread finished.\n");
+    return 0;
+}
+
+output:
+Thread is running...
+Main thread finished.

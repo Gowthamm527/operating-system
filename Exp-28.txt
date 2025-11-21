@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_LINE 1024   
+int main(int argc, char *argv[]) {
+    FILE *fp;
+    char line[MAX_LINE];
+    if (argc != 3) {
+        printf("Usage: %s <pattern> <filename>\n", argv[0]);
+        return 1;
+    }
+    fp = fopen(argv[2], "r");
+    if (fp == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+    while (fgets(line, sizeof(line), fp)) {
+        // strstr returns a pointer if pattern is found
+        if (strstr(line, argv[1]) != NULL) {
+            printf("%s", line);
+        }
+    }
+    fclose(fp);
+    return 0;
+}
+
+Output:
+Hello world
+Say hello again

@@ -1,0 +1,69 @@
+#include <stdio.h>
+struct Block {
+    int blockNumber;
+    int next;   
+};
+int main() {
+    struct Block file[20];
+    int n, i;
+    printf("Enter number of blocks in the file: ");
+    scanf("%d", &n);
+    printf("Enter block numbers allocated to the file:\n");
+    for (i = 0; i < n; i++) {
+        printf("Block %d: ", i + 1);
+        scanf("%d", &file[i].blockNumber);
+        if (i == n - 1)
+            file[i].next = -1;   
+        else
+            file[i].next = i + 1;
+    }
+    int start = 0;     
+    int end = n - 1;  
+    printf("\nLinked File Allocation:\n");
+    printf("Start Block: %d\n", file[start].blockNumber);
+    printf("End Block: %d\n\n", file[end].blockNumber);
+    printf("BlockNumber → NextPointer\n");
+    for (i = 0; i < n; i++) {
+        printf("%d → ", file[i].blockNumber);
+        if (file[i].next == -1)
+            printf("NULL\n");
+        else
+            printf("%d\n", file[file[i].next].blockNumber);
+    }
+    printf("\nTraversing file blocks:\n");
+    i = start;
+    while (i != -1) {
+        printf("Reading Block %d\n", file[i].blockNumber);
+        i = file[i].next;  // move to next block
+    }
+    return 0;
+}
+Output:
+Enter number of blocks in the file: 5
+Enter block numbers allocated to the file:
+Block 1: 10
+Block 2: 14
+Block 3: 8
+Block 4: 22
+Block 5: 30
+
+Linked File Allocation:
+Start Block: 10
+End Block: 30
+
+BlockNumber → NextPointer
+10 → 14
+14 → 8
+8 → 22
+22 → 30
+30 → NULL
+
+Traversing file blocks:
+Reading Block 10
+Reading Block 14
+Reading Block 8
+Reading Block 22
+Reading Block 30
+
+
+=== Code Execution Successful ===

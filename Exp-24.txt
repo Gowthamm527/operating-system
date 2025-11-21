@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <fcntl.h>     // For open()
+#include <unistd.h>    // For read(), write(), close()
+#include <string.h>    // For strlen()
+
+int main() {
+    int fd;
+    char buffer[100];
+
+    // 1. Create or open a file
+    fd = open("sample.txt", O_CREAT | O_RDWR, 0644);
+    if (fd < 0) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    printf("File opened successfully.\n");
+
+    // 2. Write data into the file
+    char text[] = "Hello UNIX System Calls!";
+    write(fd, text, strlen(text));
+    printf("Data written to file.\n");
+
+    // 3. Move file pointer to beginning
+    lseek(fd, 0, SEEK_SET);
+
+    // 4. Read data from file
+    int bytesRead = read(fd, buffer, sizeof(buffer));
+    buffer[bytesRead] = '\0';  // Null terminate
+
+    printf("Data read from file: %s\n", buffer);
+
+    // 5. Close the file
+    close(fd);
+    printf("File closed successfully.\n");
+
+    return 0;
+}
+

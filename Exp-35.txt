@@ -1,0 +1,50 @@
+#include <stdio.h>
+int main() {
+    int indexBlock[20], fileBlock[20];
+    int n, i;
+    printf("Enter number of blocks in the file: ");
+    scanf("%d", &n);
+    printf("Enter the block numbers allocated to the file:\n");
+    for (i = 0; i < n; i++) {
+        printf("Block for entry %d: ", i);
+        scanf("%d", &indexBlock[i]);
+    }
+    printf("\nIndexed File Allocation:\n");
+    printf("Index Block Entry → Physical Block\n");
+    for (i = 0; i < n; i++) {
+        printf("   %d \t\t→ %d\n", i, indexBlock[i]);
+    }
+    int pos;
+    printf("\nEnter the index you want to access (0 to %d): ", n - 1);
+    scanf("%d", &pos);
+    if (pos >= 0 && pos < n) {
+        printf("Accessing index %d → Physical Block %d\n",
+               pos, indexBlock[pos]);
+    } else {
+        printf("Invalid index!\n");
+    }
+    return 0;
+}
+
+Output:
+Enter number of blocks in the file: 5
+Enter the block numbers allocated to the file:
+Block for entry 0: 7
+Block for entry 1: 9
+Block for entry 2: 11
+Block for entry 3: 14
+Block for entry 4: 18
+
+Indexed File Allocation:
+Index Block Entry → Physical Block
+   0 		→ 7
+   1 		→ 9
+   2 		→ 11
+   3 		→ 14
+   4 		→ 18
+
+Enter the index you want to access (0 to 4): 3
+Accessing index 3 → Physical Block 14
+
+
+=== Code Execution Successful ===
